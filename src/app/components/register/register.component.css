@@ -1,0 +1,56 @@
+.card {
+    margin: 4rem auto;
+    background-color: var(--card);
+    padding: 2rem;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    border-radius: 1rem;
+    color: var(--primary);
+    min-width: 300px; 
+    width: 70%; 
+    max-width: 950px;
+}
+
+input::placeholder{
+  color: #ffff;
+  font-size: medium;
+}
+#registration-form{
+    background-color: var(--card);
+}
+
+.card form input{
+     background-color: var(--card);
+     color: white;
+     font-size: medium;
+}
+
+.w-45 {
+  width: 45%;
+}
+
+/* Place this in src/styles.css */
+button.btn.btn-outline-success:focus,
+button.btn.btn-outline-success:active,
+button.btn.btn-outline-success.active,
+button.btn.btn-outline-success:focus-visible {
+  background-color: #198754 !important;
+  color: #f5fffa !important;
+  border-color: #198754 !important;
+  box-shadow: 0 0 0 0.25rem rgba(25,135,84,.25) !important;
+}
+
+button.btn.btn-outline-info:focus,
+button.btn.btn-outline-info:active,
+button.btn.btn-outline-info.active,
+button.btn.btn-outline-info:focus-visible {
+  background-color: #0dcaf0 !important;
+  color: #d9f0f4 !important;
+  border-color: #0dcaf0 !important;
+  box-shadow: 0 0 0 0.25rem rgba(13,202,240,.25) !important;
+}
+
+
+.position-absolute{
+  background: none;
+   color: var(--primary);
+}

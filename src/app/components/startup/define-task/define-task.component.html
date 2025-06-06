@@ -1,0 +1,137 @@
+<div class="container mt-5">
+  <h4 class="fw-bold mb-4 text-primary">📝 Define & Track Tasks</h4>
+
+  <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div class="d-flex align-items-center gap-2">
+      <label for="taskFilter" class="form-label fw-semibold mb-0">Filter Tasks:</label>
+      <select id="taskFilter" class="form-select form-select-sm w-auto">
+        <option value="all">All</option>
+        <option value="pending">Pending</option>
+        <option value="completed">Completed</option>
+        <option value="in-progress">In Progress</option>
+      </select>
+    </div>
+    <button class="btn btn-success fw-bold shadow-sm px-4" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+      <i class="bi bi-plus-lg me-2"></i> Add New Task
+    </button>
+  </div>
+
+  <ul class="list-group shadow-sm rounded-4" >
+    <li *ngFor="let task of tasks" class="list-group-item d-flex justify-content-between align-items-center rounded-3 mb-3 border-0">
+      <div>
+        <strong class="fs-5">{{task.taskTitle}}</strong><br>
+        <small class="text-muted">Status: <span class="badge bg-warning text-dark">{{task.status}}</span></small><br>
+        <small class="text-muted">Description: <span class="text-dark">{{task.description}}</span></small><br>
+        <small class="text-muted">Points: <span class="badge bg-warning text-dark">{{task.points}}</span></small><br>
+
+        <small class="text-muted">Due Date: <span class="badge bg-warning text-dark">{{task.dueDate}}</span></small>
+
+      </div>
+      <div class="btn-group" role="group" aria-label="Task actions">
+        <button class="btn btn-outline-primary btn-sm" (click)="getCurrentTask(task)" data-bs-toggle="modal" data-bs-target="#updateTaskModal" >Edit</button>
+        <button class="btn btn-outline-danger btn-sm" (click)="delete(task.id)">Delete</button>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- Add Task Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header bg-success text-white rounded-top-4">
+        <h5 class="modal-title fw-bold" id="addTaskModalLabel">➕ Add New Task</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body bg-light">
+        <form>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="taskTitle" class="form-label fw-semibold">Task Title</label>
+              <input type="text" id="taskTitle" class="form-control" placeholder="Enter task title" [(ngModel)]="taskModel.taskTitle" name="taskTitle" required>
+            </div>
+            <div class="col-md-6">
+              <label for="taskPoints" class="form-label fw-semibold">Points</label>
+              <input type="number" id="taskPoints" class="form-control" placeholder="Enter points" min="1" [(ngModel)]="taskModel.points" name="points" required>
+            </div>
+            <div class="col-12">
+              <label for="taskDescription" class="form-label fw-semibold">Description</label>
+              <textarea id="taskDescription" class="form-control" rows="4" placeholder="Task description..." [(ngModel)]="taskModel.description" name="description"
+                required></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="taskStatus" class="form-label fw-semibold">Status</label>
+              <select id="taskStatus" class="form-select" [(ngModel)]="taskModel.status" name="status" required>
+                <option value="" selected disabled>Select status</option>
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="taskDueDate" class="form-label fw-semibold">Due Date</label>
+              <input type="date" id="taskDueDate" class="form-control" [(ngModel)]="taskModel.dueDate" name="dueDate" required>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer bg-light rounded-bottom-4">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-success" (click)="addTask()">Save Task</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="updateTaskModal" tabindex="-1" aria-labelledby="updateTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header bg-success text-white rounded-top-4">
+        <h5 class="modal-title fw-bold" id="updateTaskModalLabel">Update Task</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="window.location.reload()"></button>
+      </div>
+
+      <div class="modal-body bg-light">
+        <form>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="taskTitle" class="form-label fw-semibold">Task Title</label>
+              <input type="text" id="taskTitle" class="form-control" placeholder="Enter task title" [(ngModel)]="taskModel.taskTitle" name="taskTitle" required>
+            </div>
+            <div class="col-md-6">
+              <label for="taskPoints" class="form-label fw-semibold">Points</label>
+              <input type="number" id="taskPoints" class="form-control" placeholder="Enter points" min="1" [(ngModel)]="taskModel.points" name="points" required>
+            </div>
+            <div class="col-12">
+              <label for="taskDescription" class="form-label fw-semibold">Description</label>
+              <textarea id="taskDescription" class="form-control" rows="4" placeholder="Task description..."
+                [(ngModel)]="taskModel.description" name="description" required></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="taskStatus" class="form-label fw-semibold">Status</label>
+              <select id="taskStatus" class="form-select" [(ngModel)]="taskModel.status" name="status" required>
+                <option value="" disabled>Select status</option>
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="taskDueDate" class="form-label fw-semibold">Due Date</label>
+              <input type="date" id="taskDueDate" class="form-control" [(ngModel)]="taskModel.dueDate" name="dueDate" required>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer bg-light rounded-bottom-4">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.reload()">Cancel</button>
+        <button type="submit" class="btn btn-success" (click)="updateTask()">Update Task</button>
+      </div>
+    </div>
+  </div>
+</div>

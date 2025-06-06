@@ -1,0 +1,282 @@
+<div class="container mt-5">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs nav-fill" id="mainTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="earnings-tab" data-bs-toggle="tab" data-bs-target="#earnings" type="button"
+        role="tab" aria-controls="earnings" aria-selected="true">
+        💰 Apply & Complete Tasks
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="tasks-tab" data-bs-toggle="tab" data-bs-target="#tasks" type="button" role="tab"
+        aria-controls="tasks" aria-selected="false">
+        🗂️ Your Tasks
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab content -->
+  <div class="tab-content mt-4" id="mainTabsContent">
+    <div class="tab-pane fade show active" id="earnings" role="tabpanel" aria-labelledby="newtasks-tab">
+      <div class="my-5">
+        <h2 class="text-center mb-4 fw-bold">🚀 Apply & Complete Tasks</h2>
+
+        <!-- Task list -->
+        <div class="row">
+          <div class="col-md-6 mb-4" *ngFor="let task of startupTasks">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 class="card-title fw-semibold">{{ task.taskTitle }}
+                </h5>
+                <p class="card-text"><strong>Description:</strong>{{ task.description }}</p>
+                <p><strong>Points:</strong> {{ task.points }}</p>
+                <p><strong>Due Date:</strong> {{ task.dueDate }}</p>
+
+                <div class="d-flex justify-content-between">
+                  <button class="btn btn-primary btn-sm" (click)="selectTask(task)" data-bs-toggle="modal" data-bs-target="#applyTaskModal" >Apply</button>
+                <button class="btn btn-danger btn-sm" (click)="notIntereseted(task)">Not Interested</button>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload Proof Section -->
+        <div *ngIf="selectedTask" class="mt-5">
+          <h4 class="fw-bold">📤 Submit Proof for: {{ selectedTask.title }}</h4>
+          <form (ngSubmit)="submitProof()" #proofForm="ngForm">
+            <div class="mb-3">
+              <label for="proof" class="form-label">Upload Screenshot or Link</label>
+              <input type="file" class="form-control" id="proof" (change)="handleFileInput($event)">
+            </div>
+            <div class="mb-3">
+              <label for="comments" class="form-label">Optional Comment</label>
+              <textarea class="form-control" id="comments" rows="3" [(ngModel)]="comment" name="comment"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Submit Proof</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="tab-pane fade" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
+      <div class="card shadow rounded-4 animate__animated animate__fadeInUp">
+        <div class="card-header bg-primary text-white text-center rounded-top-4">
+          <h3 class="mb-0 fw-bold">🗂️ Your Tasks</h3>
+          <small class="text-light">Manage and track your tasks here</small>
+        </div>
+
+        <div class="card-body bg-light px-4 py-4 rounded-bottom-4">
+          <div class="mb-4 d-flex justify-content-between align-items-center">
+            <div>
+              <label for="taskFilter" class="form-label fw-semibold me-2">Filter Tasks:</label>
+              <select id="taskFilter" class="form-select d-inline-block w-auto" (change)="onStatusChange($event)">
+                <option value="all" selected>All</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="in-progress">In Progress</option>
+              </select>
+            </div>
+            <button class="btn btn-success fw-bold shadow-sm" type="button" data-bs-toggle="modal"
+              data-bs-target="#addTaskModal">
+              + Add New Task
+            </button>
+
+          </div>
+
+          <ul class="list-group">
+            <li *ngFor="let task of filteredTasks"
+              class="list-group-item d-flex justify-content-between align-items-center rounded-3 mb-3 shadow-sm">
+              <div>
+                <h5 class="mb-1">{{ task.taskName }}</h5>
+                <small class="text-muted">Task Description: {{ task.taskDescription }}</small><br />
+
+                <small class="text-muted">Due Date: {{ task.taskDueDate }}</small><br />
+                <small class="text-muted">Points: {{ task.taskPoints }}</small><br />
+                <small class="text-muted">
+                  Status:
+                  <span [ngClass]="{
+                'badge bg-warning text-dark': task.taskStatus === 'in-progress',
+                'badge bg-success': task.taskStatus === 'completed',
+                'badge bg-secondary': task.taskStatus === 'pending'
+              }">
+                    {{ task.taskStatus | titlecase }}
+                  </span>
+                </small>
+              </div>
+              <div>
+                <button class="btn btn-outline-primary btn-sm me-2" type="button" (click)="editTask(task)"
+                  data-bs-toggle="modal" data-bs-target="#updateTaskModal">
+                  Edit
+                </button>
+
+                <button class="btn btn-outline-danger btn-sm" type="button" (click)=deleteTask(task.id)>Delete</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Add Task Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form (ngSubmit)="addTask()" #taskForm="ngForm">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="taskName" class="form-label">Task Name</label>
+            <input type="text" class="form-control" id="taskName" [(ngModel)]="taskModel.taskName" name="taskName"
+              required>
+          </div>
+          <div class="mb-3">
+            <label for="taskDescription" class="form-label">Task Description</label>
+            <textarea type="text" class="form-control" id="taskDescription" [(ngModel)]="taskModel.taskDescription"
+              name="taskDescription" required></textarea>
+          </div>
+
+
+
+          <div class="mb-3">
+            <label for="taskStatus" class="form-label">Status</label>
+            <select class="form-select" id="taskStatus" [(ngModel)]="taskModel.taskStatus" name="taskStatus" required>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="taskPoints" class="form-label">Points</label>
+            <input type="number" class="form-control" id="taskPoints" [(ngModel)]="taskModel.taskPoints"
+              name="taskPoints" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="taskDueDate" class="form-label">Due Date</label>
+            <input type="date" class="form-control" id="taskDueDate" [(ngModel)]="taskModel.taskDueDate"
+              name="taskDueDate" required>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Add Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Update Task Modal -->
+<div class="modal fade" id="updateTaskModal" tabindex="-1" aria-labelledby="updateTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form (ngSubmit)="updateTask()" #taskForm="ngForm">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="updateTaskModalLabel">Update Task</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="taskName" class="form-label">Task Name</label>
+            <input type="text" class="form-control" id="taskName" [(ngModel)]="taskModel.taskName" name="taskName"
+              required>
+          </div>
+
+          <div class="mb-3">
+            <label for="taskDescription" class="form-label">Task Description</label>
+            <textarea type="text" class="form-control" id="taskDescription" [(ngModel)]="taskModel.taskDescription"
+              name="taskDescription" required></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="taskStatus" class="form-label">Status</label>
+            <select class="form-select" id="taskStatus" [(ngModel)]="taskModel.taskStatus" name="taskStatus" required>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="taskPoints" class="form-label">Points</label>
+            <input type="number" class="form-control" id="taskPoints" [(ngModel)]="taskModel.taskPoints"
+              name="taskPoints" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="taskDueDate" class="form-label">Due Date</label>
+            <input type="date" class="form-control" id="taskDueDate" [(ngModel)]="taskModel.taskDueDate"
+              name="taskDueDate" required>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Update Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="applyTaskModal" tabindex="-1" aria-labelledby="applyTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form (ngSubmit)="aplyToTask()" #taskForm="ngForm">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="applyTaskModalLabel">Apply Task</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="taskName" class="form-label">Task Name</label>
+            <input type="text" class="form-control" id="taskName" [(ngModel)]="applyModel.taskName" name="taskName"
+              required readonly>
+          </div>
+
+          <div class="mb-3">
+            <label for="userName" class="form-label">User Name</label>
+            <input type="text" class="form-control" id="userName" [(ngModel)]="applyModel.userName" name="userName"
+              required readonly>
+          </div>
+
+          <div class="mb-3">
+            <label for="userEmail" class="form-label">User Email</label>
+            <input type="text" class="form-control" id="userEmail" [(ngModel)]="applyModel.userEmail" name="userEmail"
+              required readonly>
+          </div>
+
+          <div class="mb-3">
+            <label for="link" class="form-label">Add Github Repo Link</label>
+            <input type="text" class="form-control" id="link" [(ngModel)]="applyModel.link" name="link"
+              required>
+          </div>
+
+          <div class="mb-3">
+            <label for="doc" class="form-label">Add Document</label>
+            <input type="file" class="form-control" id="doc" [(ngModel)]="applyModel.doc" name="doc"
+              required>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Upload And Apply For Task</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

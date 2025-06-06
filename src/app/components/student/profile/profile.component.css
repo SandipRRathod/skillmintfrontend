@@ -1,0 +1,7 @@
+.card-header{
+    background-color: var(--card);
+    /* box-shadow: 0 0 12px rgba(0, 0, 0, 0.4); */
+    color: var(--primary) !important;
+}
+
+

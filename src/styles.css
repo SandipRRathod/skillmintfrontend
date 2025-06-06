@@ -1,0 +1,25 @@
+/* You can add global styles to this file, and also import other style files */
+
+ :root {
+      --primary: #00ffb2;
+      --background: #121212;
+      --card: #1e1e1e;
+      --text: #ffffff;
+      --muted: #bbbbbb;
+    }
+
+
+     body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+    }
+
+    .hero-section {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }

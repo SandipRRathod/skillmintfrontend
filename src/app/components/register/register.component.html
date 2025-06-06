@@ -1,0 +1,70 @@
+<div class="hero-section">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card p-4 shadow-lg border-0 rounded-4">
+            <div class="text-center mb-4">
+                <h3 class="fw-bold mb-4 text-primary">Register As</h3>
+                <div class="d-flex justify-content-center gap-4">
+                    <button class="btn btn-outline-success px-4 py-2 rounded-pill fw-semibold shadow-sm"
+                        (click)="RegisterAs('student')">
+                        <i class="bi bi-person me-2"></i> Student
+                    </button>
+                    <button class="btn btn-outline-info px-4 py-2 rounded-pill fw-semibold shadow-sm"
+                        (click)="RegisterAs('startup')">
+                        <i class="bi bi-rocket-takeoff me-2"></i> Startup
+                    </button>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center mt-2" *ngIf="role">
+                <div class="col-md-7">
+
+                    <form id="registration-form" (ngSubmit)="onSubmit()" class="m-1">
+                        <div class="mb-3" *ngIf="role=='student'">
+                            <label class="form-label fw-semibold"> Student Name</label>
+                            <input type="text" class="form-control form-control-lg rounded-3 shadow-sm"
+                                placeholder="Enter your name" [(ngModel)]="registerModel.userName" name="userName" required>
+                        </div>
+                        <div class="mb-3" *ngIf="role=='startup'">
+                            <label class="form-label fw-semibold">Startup Name</label>
+                            <input type="text" class="form-control form-control-lg rounded-3 shadow-sm"
+                                placeholder="Enter your org name" [(ngModel)]="registerModel.orgName" name="orgName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input type="email" class="form-control form-control-lg rounded-3 shadow-sm"
+                                placeholder="Enter your email" [(ngModel)]="registerModel.email" name="email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Phone/Contact No</label>
+                            <input type="text" value="+91" class="form-control form-control-lg rounded-3 shadow-sm"
+                                placeholder="Enter your phone no" [(ngModel)]="registerModel.phone" name="phone" required>
+                        </div>
+
+                        <div class="mb-3 position-relative">
+                            <label class="form-label fw-semibold">Password</label>
+                            <input [type]="showPassword ? 'text' : 'password'"
+                                class="form-control form-control-lg rounded-3 shadow-sm pe-5"
+                                placeholder="Enter your password" [(ngModel)]="registerModel.password" name="password" required id="passwordInput">
+                            <button type="button"
+                                class="position-absolute end-0 top-50 translate-middle-y p-0 m-3 border-0"
+                                (click)="showPassword = !showPassword" aria-label="Toggle password visibility">
+                                <i class="bi fs-5" [ngClass]="!showPassword ? 'bi-eye' : 'bi-eye-slash'"></i>
+                            </button>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            </div>
+                            <a href="#" class="link-primary text-decoration-none small">Forgot password?</a>
+                        </div>
+                        <button type="submit"
+                            class="btn btn-primary btn-lg w-100 rounded-3 shadow-sm mb-2">Register</button>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

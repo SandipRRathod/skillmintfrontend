@@ -1,0 +1,117 @@
+<div class="container my-5">
+  <h4 class="fw-bold mb-4 text-primary border-start border-4 border-success ps-3">
+    🎯 Active Campaigns
+  </h4>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-success btn-lg fw-semibold shadow-sm" data-bs-toggle="modal" data-bs-target="#campaignModal">
+      + Launch Campaign
+    </button>
+  </div>
+
+  <div class="table-responsive shadow rounded-4">
+    <table class="table table-hover align-middle mb-0 bg-white rounded-4">
+      <thead class="table-success">
+        <tr>
+          <th scope="col">Campaign</th>
+          <th scope="col">Status</th>
+          <th scope="col">Reach</th>
+          <th scope="col">Desc</th>
+          <th scope="col">Task</th>
+
+          <th scope="col" class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody  *ngFor="let campaign of campaigns">
+        <tr>
+          <td class="fw-semibold">{{campaign.name}}</td>
+          <td>
+            <span class="badge bg-success px-3 py-2 fs-6">{{campaign.status}}</span>
+          </td>
+          <td>{{campaign.reach}}</td>
+
+          <td>{{campaign.description}}</td>
+          <td data-bs-toggle="modal" data-bs-target="#campaignTask" class="text-primary"
+            style="cursor: pointer; text-decoration: underline;" (click)="loadCampaginTasks(campaign.id)">See</td>
+
+          <td class="text-center">
+            <button class="btn btn-sm btn-primary me-2" (click)="editCampaign(campaign.id,campaign)" data-bs-toggle="modal"
+              data-bs-target="#campaignModal">
+              <i class="bi bi-pencil-fill"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteCampaign(campaign.id)">
+              <i class="bi bi-trash-fill"></i>
+            </button>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="campaignModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header bg-success text-white rounded-top-4">
+        <h5 class="modal-title fw-bold">{{ editMode ? '✏️ Edit' : '🚀 Launch' }} Campaign</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body bg-light">
+        <form>
+          <div class="mb-3">
+            <label class="form-label">Campaign Name</label>
+            <input type="text" class="form-control" [(ngModel)]="campaignModel.name" name="name" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select class="form-select" [(ngModel)]="campaignModel.status" name="status" required>
+              <option value="Draft">Draft</option>
+              <option value="Live">Live</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Reach</label>
+            <input type="number" class="form-control" [(ngModel)]="campaignModel.reach" name="reach" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" rows="4" [(ngModel)]="campaignModel.description" name="description"
+              required></textarea>
+          </div>
+
+            <div class="mb-3">
+            <label class="form-label">Tasks</label>
+            <textarea class="form-control" rows="4" [(ngModel)]="campaignModel.task" name="task"
+              required></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer bg-light rounded-bottom-4">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-success" (click)="saveCampaign()" data-bs-dismiss="modal">
+          {{ editMode ? 'Update' : 'Save' }} Campaign
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="campaignTask" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header bg-success text-white rounded-top-4">
+        <h5 class="modal-title fw-bold">Campaign Task</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body bg-light">
+        <div class="mb-3" *ngFor="let task of campaignTask; let i = index">
+          <span>{{ i + 1 }}. {{ task }}</span>
+        </div>
+      </div>
+      <div class="modal-footer bg-light rounded-bottom-4">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

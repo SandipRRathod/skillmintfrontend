@@ -1,0 +1,95 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg rounded-4 border-0 animate__animated animate__fadeIn">
+                <div class="card-header text-white text-center rounded-top-4 p-3"
+                    style="background: linear-gradient(135deg, #007bff, #00c6ff);">
+                    <h3 class="mb-0 fw-bold">👤 Your SkillMint Profile</h3>
+
+                </div>
+
+                <div class="card rounded-bottom-0 p-4 mb-1">
+                    <h4 class="mb-3"> Your Total Points:
+                        <span class="text-success fw-bold">{{ points }}</span>
+                    </h4>
+                    <p class="fs-5"><strong>Equivalent Amount:</strong> ₹{{ points * 2 }}</p>
+
+                    <button class="btn btn-success">Add Points</button>
+                </div>
+
+                <div class="card-body rounded-bottom-4">
+                    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Startup Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i
+                                        class="bi bi-person-fill text-primary"></i></span>
+                                <input type="text" class="form-control shadow-sm" formControlName="orgName"
+                                    placeholder="John Doe" />
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i
+                                        class="bi bi-envelope-fill text-primary"></i></span>
+                                <input type="email" class="form-control shadow-sm" formControlName="orgEmail"
+                                    placeholder="john@example.com" />
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i
+                                        class="bi bi-telephone-fill text-primary"></i></span>
+                                <input type="tel" class="form-control shadow-sm" formControlName="orgPhNo"
+                                    placeholder="+91 9876543210" />
+                            </div>
+                        </div>
+
+
+
+                        <div class="text-center">
+                            <button type="submit"
+                                class="btn btn-primary px-5 py-2 rounded-pill fw-bold shadow animate__animated animate__pulse animate__delay-1s">
+                                🚀 Update Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="container my-4">
+    <ul class="list-group shadow rounded-4">
+        <li class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
+            <div class="d-flex align-items-center gap-3">
+                <i class="bi bi-instagram fs-4 text-danger"></i>
+                <span class="fw-semibold">Share App on Instagram</span>
+            </div>
+            <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">50 Points</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
+            <div class="d-flex align-items-center gap-3">
+                <i class="bi bi-people-fill fs-4 text-success"></i>
+                <span class="fw-semibold">Refer a Friend</span>
+            </div>
+            <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">100 Points</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center px-4 py-3" (click)="logout()" style="cursor: pointer;">
+            <div class="d-flex align-items-center gap-3">
+                <i class="bi bi-box-arrow-right fs-4 text-danger"></i>
+                <span class="fw-semibold text-capitalize">Logout</span>
+            </div>
+            <span class="badge bg-danger rounded-pill px-3 py-2 fs-6">Logout</span>
+        </li>
+    </ul>
+</div>
